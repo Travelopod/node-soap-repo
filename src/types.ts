@@ -1,6 +1,5 @@
-
-import * as req from 'axios';
-import { ReadStream } from 'fs';
+import * as req from "axios";
+import { ReadStream } from "fs";
 
 export interface IHeaders {
   [k: string]: any;
@@ -11,27 +10,54 @@ export interface IExOptions {
 }
 
 export interface IHttpClient {
-  request(rurl: string, data: any, callback: (error: any, res?: any, body?: any) => any, exheaders?: IHeaders, exoptions?: IExOptions, caller?): req.AxiosPromise;
-  requestStream?(rurl: string, data: any, exheaders?: IHeaders, exoptions?: IExOptions, caller?): req.AxiosPromise<ReadStream>;
+  request(
+    rurl: string,
+    data: any,
+    callback: (error: any, res?: any, body?: any) => any,
+    exheaders?: IHeaders,
+    exoptions?: IExOptions,
+    caller?
+  ): req.AxiosPromise;
+  requestStream?(
+    rurl: string,
+    data: any,
+    exheaders?: IHeaders,
+    exoptions?: IExOptions,
+    caller?
+  ): req.AxiosPromise<ReadStream>;
 }
 
 /** @deprecated use SoapMethod */
 export type ISoapMethod = SoapMethod;
 export type SoapMethod = (
   args: any,
-  callback: (err: any, result: any, rawResponse: any, soapHeader: any, rawRequest: any, mtomAttachments?: IMTOMAttachments) => void,
+  callback: (
+    err: any,
+    result: any,
+    rawResponse: any,
+    soapHeader: any,
+    rawRequest: any,
+    mtomAttachments?: IMTOMAttachments
+  ) => void,
   options?: any,
   extraHeaders?: any,
-  mtomAttachments?: IMTOMAttachments,
+  mtomAttachments?: IMTOMAttachments
 ) => void;
 
 export type SoapMethodAsync = (
   args: any,
   options?: any,
-  extraHeaders?: any,
+  extraHeaders?: any
 ) => Promise<[any, any, any, any, IMTOMAttachments?]>;
 
-export type ISoapServiceMethod = (args: any, callback?: (data: any) => void, headers?: any, req?: any, res?: any, sender?: any) => any;
+export type ISoapServiceMethod = (
+  args: any,
+  callback?: (data: any) => void,
+  headers?: any,
+  req?: any,
+  res?: any,
+  sender?: any
+) => any;
 
 // SOAP Fault 1.1 & 1.2
 export interface ISoapFaultError {
@@ -53,8 +79,8 @@ export interface ISoapFault11 {
 // Role, Node, Detail. Should be added when soap module implements them
 // https://www.w3.org/TR/soap12/#soapfault
 export interface ISoapFault12 {
-  Code: { Value: string; Subcode?: { Value: string; }; };
-  Reason: { Text: string; };
+  Code: { Value: string; Subcode?: { Value: string } };
+  Reason: { Text: string };
   statusCode?: number;
 }
 
@@ -88,8 +114,14 @@ export interface IWsdlBaseOptions {
   attributesKey?: string;
   valueKey?: string;
   xmlKey?: string;
-  overrideRootElement?: { namespace: string; xmlnsAttributes?: IXmlAttribute[]; };
-  ignoredNamespaces?: boolean | string[] | { namespaces?: string[]; override?: boolean; };
+  overrideRootElement?: {
+    namespace: string;
+    xmlnsAttributes?: IXmlAttribute[];
+  };
+  ignoredNamespaces?:
+    | boolean
+    | string[]
+    | { namespaces?: string[]; override?: boolean };
   ignoreBaseNameSpaces?: boolean;
   /** escape special XML characters in SOAP message (e.g. &, >, < etc), default: true. */
   escapeXML?: boolean;
@@ -136,6 +168,7 @@ export interface IOptions extends IWsdlBaseOptions {
   WSDL_CACHE?;
   /** handle MTOM soapAttachments in response */
   parseReponseAttachments?: boolean;
+  headerAttributes?: any;
 }
 
 export interface IOneWayOptions {
@@ -158,7 +191,7 @@ export interface IServerOptions extends IWsdlBaseOptions {
 
 export interface IMTOMAttachments {
   parts: Array<{
-    body: Buffer,
-    headers: { [key: string]: string },
+    body: Buffer;
+    headers: { [key: string]: string };
   }>;
 }
